@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 import { register } from "../api";
 import { ApiError } from "~/lib/api/errors";
 import { Input } from "~/components/ui/Input";
@@ -27,7 +27,7 @@ export function RegisterForm() {
         password,
       });
 
-    navigate("/login");
+      navigate("/login");
 
     } catch (err) {
       if (err instanceof ApiError) {
@@ -45,37 +45,49 @@ export function RegisterForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <Input
-        label="メールアドレス"
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
+    <div>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <Input
+          label="メールアドレス"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
 
-      <Input
-        label="パスワード(8文字以上)"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
+        <Input
+          label="パスワード(8文字以上)"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
 
-      {error && (
-        <p className="text-sm text-red-500">
-          {error}
-        </p>
-      )}
+        {error && (
+          <p className="text-sm text-red-500">
+            {error}
+          </p>
+        )}
 
-      <Button
-        type="submit"
-        isLoading={isLoading}
-        disabled={!email || !password}
-        className="w-full"
-      >
-        登録
-      </Button>
-    </form>
+        <Button
+          type="submit"
+          isLoading={isLoading}
+          disabled={!email || !password}
+          className="w-full"
+        >
+          登録
+        </Button>
+
+      </form>
+      <p className="mt-4 text-center text-sm text-gray-600">
+        <Link
+          to="/login"
+          className="font-medium text-blue-600 hover:text-blue-700 hover:underline"
+        >
+          ログインはこちら
+        </Link>
+      </p>
+    </div>
+
   );
 }
