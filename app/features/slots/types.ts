@@ -1,5 +1,5 @@
 export type ReservationSlot = {
-  id: number;
+  id: string;
   start_at: string;
   end_at: string;
   is_accepting: boolean;

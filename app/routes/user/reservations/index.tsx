@@ -3,9 +3,12 @@ import { ReservationCalendar } from
   "~/features/slots/components/ReservationCalendar";
 import { useSlots } from "~/features/slots/useSlots";
 import type { ReservationSlot } from "~/features/slots/types";
+import { useNavigate } from "react-router";
 
 export default function ReservationListPage() {
   const [currentDate, setCurrentDate] = useState(new Date());
+
+  const navigate = useNavigate();
 
   // 表示週の月曜日を取得
   const day = currentDate.getDay();
@@ -24,7 +27,7 @@ export default function ReservationListPage() {
   const { slots, isLoading, error } = useSlots(date);
 
   const handleSlotSelect = (slot: ReservationSlot) => {
-    console.log("選択した予約枠:", slot);
+    navigate(`/reservations/new?slotId=${slot.id}`)
   };
 
   return (
