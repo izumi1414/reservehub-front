@@ -4,6 +4,7 @@ import { login } from "../api";
 import { ApiError } from "~/lib/api/errors";
 import { Input } from "~/components/ui/Input";
 import { Button } from "~/components/ui/Button";
+import { useAuth } from "~/features/auth/useAuth";
 
 export function LoginForm() {
   const navigate = useNavigate();
@@ -12,6 +13,8 @@ export function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const { setUser } = useAuth();
 
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>
@@ -26,6 +29,9 @@ export function LoginForm() {
         email,
         password,
       });
+
+      // Contextにログインユーザー情報を設定
+      setUser(response.user);
 
       // ログイン後の遷移先をロールで分岐
       if (response.user.role === "admin") {
