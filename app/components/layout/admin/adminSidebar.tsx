@@ -9,7 +9,7 @@ import {
 const menuItems = [
   {
     label: "予約枠管理",
-    path: "/admin",
+    path: "/admin/slots",
     icon: CalendarDays,
     end: true,
   },
