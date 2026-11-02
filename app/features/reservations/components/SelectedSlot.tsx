@@ -1,14 +1,16 @@
 type SelectedSlotCardProps = {
-  startAt: string;
-  endAt: string;
+  startAt?: string | null;
+  endAt?: string | null;
 };
 
 export function SelectedSlotCard({
   startAt,
   endAt,
 }: SelectedSlotCardProps) {
-  const formatDate = (value: string) => {
+  const formatDate = (value?: string | null) => {
+    if (!value) return "日時を取得できませんでした";
     const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "日時を取得できませんでした";
 
     return new Intl.DateTimeFormat("ja-JP", {
       year: "numeric",
@@ -18,8 +20,10 @@ export function SelectedSlotCard({
     }).format(date);
   };
 
-  const formatTime = (value: string) => {
+  const formatTime = (value?: string | null) => {
+    if (!value) return "--:--";
     const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "--:--";
 
     return new Intl.DateTimeFormat("ja-JP", {
       hour: "2-digit",

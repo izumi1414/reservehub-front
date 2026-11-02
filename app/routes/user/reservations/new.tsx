@@ -32,13 +32,51 @@ export default function ReservationNewPage() {
         setIsLoading(true);
         setError(null);
 
-        const data = await apiClient.get<ReservationSlot>(
+        const data = await apiClient.get<
+          ReservationSlot & {
+            startAt?: string;
+            endAt?: string;
+            start_time?: string;
+            end_time?: string;
+            startTime?: string;
+            endTime?: string;
+            slot?: ReservationSlot;
+          }
+        >(
           `/api/slots/${slotId}`,
           false
         );
 
         if (isActive) {
-          setSlot(data);
+          const responseSlot = data.slot ?? data;
+          const normalizedSlot = {
+            ...responseSlot,
+            start_at:
+              responseSlot.start_at ??
+              data.startAt ??
+              data.start_time ??
+              data.startTime ??
+              "",
+            end_at:
+              responseSlot.end_at ??
+              data.endAt ??
+              data.end_time ??
+              data.endTime ??
+              "",
+          };
+
+          const startDate = new Date(normalizedSlot.start_at);
+          const endDate = new Date(normalizedSlot.end_at);
+
+          if (
+            Number.isNaN(startDate.getTime()) ||
+            Number.isNaN(endDate.getTime())
+          ) {
+            setError("予約枠の日時情報を取得できませんでした。");
+            setSlot(null);
+          } else {
+            setSlot(normalizedSlot);
+          }
         }
       } catch (err) {
         if (isActive) {
@@ -70,6 +108,8 @@ export default function ReservationNewPage() {
     navigate("/reservations/confirm", {
       state: {
         slotId,
+        startAt: slot?.start_at,
+        endAt: slot?.end_at,
         ...values,
       },
     });
