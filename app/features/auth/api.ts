@@ -1,5 +1,6 @@
 import { apiClient } from "~/lib/api/client";
 import { tokenStorage } from "~/lib/api/token";
+import type { AuthUser } from "./types";
 
 type LoginRequest = {
   email: string;
@@ -48,4 +49,8 @@ export async function register(
   );
 
   return response;
+}
+
+export async function getCurrentUser() {
+  return apiClient.get<AuthUser>("/api/users/me");
 }
