@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { login } from "../api";
 import { ApiError } from "~/lib/api/errors";
 import { Input } from "~/components/ui/Input";
@@ -49,37 +49,48 @@ export function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <Input
-        label="メールアドレス"
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
+    <div>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <Input
+          label="メールアドレス"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
 
-      <Input
-        label="パスワード"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
+        <Input
+          label="パスワード"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
 
-      {error && (
-        <p className="text-sm text-red-500">
-          {error}
-        </p>
-      )}
+        {error && (
+          <p className="text-sm text-red-500">
+            {error}
+          </p>
+        )}
 
-      <Button
-        type="submit"
-        isLoading={isLoading}
-        disabled={!email || !password}
-        className="w-full"
-      >
-        ログイン
-      </Button>
-    </form>
+        <Button
+          type="submit"
+          isLoading={isLoading}
+          disabled={!email || !password}
+          className="w-full"
+        >
+          ログイン
+        </Button>
+      </form>
+
+      <p className="mt-4 text-center text-sm text-gray-600">
+        <Link
+          to="/register"
+          className="font-medium text-blue-600 hover:text-blue-700 hover:underline"
+        >
+          会員登録はこちら
+        </Link>
+      </p>
+    </div>
   );
 }
