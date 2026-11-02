@@ -9,11 +9,16 @@ type LoginRequest = {
 type LoginResponse = {
   accessToken: string;
   user: {
-    id: number;
+    id: string;
     email: string;
     role: "user" | "admin";
   };
 };
+
+type RegisterResponse = {
+  id: string;
+  email: string;
+}
 
 export async function login(
   params: LoginRequest
@@ -31,4 +36,16 @@ export async function login(
 
 export function logout(): void {
   tokenStorage.remove();
+}
+
+export async function register(
+  params: LoginRequest
+) {
+  const response = await apiClient.post<RegisterResponse>(
+    "/api/auth/register",
+    params,
+    false
+  );
+
+  return response;
 }
