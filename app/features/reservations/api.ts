@@ -1,7 +1,9 @@
 import { apiClient } from "~/lib/api/client";
-import type {
-  CreateReservationRequest,
-  CreateReservationResponse,
+import {
+  type CreateReservationRequest,
+  type CreateReservationResponse,
+  type MyReservation,
+  type CancelReservationResponse,
 } from "./types";
 
 export function createReservation(
@@ -10,5 +12,17 @@ export function createReservation(
   return apiClient.post<CreateReservationResponse>(
     "/api/reservations",
     params
+  );
+}
+
+export function getMyReservations() {
+  return apiClient.get<MyReservation[]>(
+    "/api/reservations"
+  )
+}
+
+export function cancelReservation(reservationId: string) {
+  return apiClient.patch<CancelReservationResponse>(
+    `/api/reservations/${reservationId}/cancel`
   );
 }
