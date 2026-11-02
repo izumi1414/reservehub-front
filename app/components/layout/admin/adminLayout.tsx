@@ -1,10 +1,30 @@
-import { Outlet } from "react-router";
+import { Outlet, useNavigate, Navigate } from "react-router";
 import { AdminSidebar } from "./adminSidebar";
 import { Header } from "../shared/Header";
+import { useAuth } from "~/features/auth/useAuth";
 
 export function AdminLayout() {
+  const navigate = useNavigate();
+  const { user, logout, isLoading } = useAuth();
+
+  // 認証状態の確認中
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  // 未ログインの場合
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // 管理者以外の場合
+  if (user.role !== "admin") {
+    return <Navigate to="/reservations" replace />;
+  }
+
   const handleLogout = () => {
-    // TODO: ログアウト処理を実装
+    logout();
+    navigate("/login", { replace: true });
   };
 
   return (
@@ -16,7 +36,7 @@ export function AdminLayout() {
       <div className="flex min-w-0 flex-1 flex-col">
         {/* 共通ヘッダー */}
         <Header
-          userName="管理者"
+          userName={user?.role === "admin" ? "管理者" : undefined}
           onLogout={handleLogout}
         />
 
