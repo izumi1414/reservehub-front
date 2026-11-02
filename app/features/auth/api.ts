@@ -28,3 +28,7 @@ export async function login(
 
   return response;
 }
+
+export function logout(): void {
+  tokenStorage.remove();
+}

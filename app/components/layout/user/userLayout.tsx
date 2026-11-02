@@ -1,10 +1,14 @@
-import { Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import { UserSidebar } from "./userSidebar";
 import { Header } from "../shared/Header";
+import { logout } from "~/features/auth/api";
 
 export function UserLayout() {
+  const navigate = useNavigate();
+
   const handleLogout = () => {
-    // TODO: ログアウト処理を実装
+    logout();
+    navigate("/login", { replace: true });
   };
 
   return (
