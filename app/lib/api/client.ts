@@ -32,8 +32,10 @@ async function request<T>(
     }
   }
 
+  const url = `${API_BASE_URL.replace(/\/$/, "")}/${endpoint.replace(/^\//, "")}`;
+
   const response = await fetch(
-    `${API_BASE_URL}${endpoint}`,
+    url,
     {
       method,
       headers,
