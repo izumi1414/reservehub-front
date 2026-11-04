@@ -48,9 +48,14 @@ async function request<T>(
   // レスポンスの取得
   const text = await response.text();
 
-  const data = text
-    ? JSON.parse(text)
-    : null;
+  let data: unknown = null;
+  if (text) {
+    try {
+      data = JSON.parse(text);
+    } catch {
+      data = { message: text };
+    }
+  }
 
   // HTTPエラー
   if (!response.ok) {
