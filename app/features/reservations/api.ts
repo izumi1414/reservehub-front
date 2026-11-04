@@ -26,3 +26,9 @@ export function cancelReservation(reservationId: string) {
     `/api/reservations/${reservationId}/cancel`
   );
 }
+
+export function getMyReservationById(reservationId: string) {
+  return apiClient.get<MyReservation>(
+    `/api/reservations/${reservationId}`
+  )
+}

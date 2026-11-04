@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { DataTable } from "~/components/ui/DataTable";
 import { StatusBadge } from "~/components/ui/StatusBadge";
 import { Button } from "~/components/ui/Button";
@@ -9,6 +10,7 @@ import {
 import type { MyReservation } from "~/features/reservations/types";
 
 export default function MyReservationsPage() {
+  const navigate = useNavigate();
   const [reservations, setReservations] = useState<MyReservation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -117,18 +119,29 @@ export default function MyReservationsPage() {
               id: "action",
               header: "操作",
               render: (row) => (
-                <Button
-                  variant="danger"
-                  size="sm"
-                  disabled={
-                    row.status !== "confirmed" ||
-                    cancelingId === row.reservation_id
-                  }
-                  isLoading={cancelingId === row.reservation_id}
-                  onClick={() => handleCancel(row)}
-                >
-                  キャンセル
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    disabled={
+                      row.status !== "confirmed" ||
+                      cancelingId === row.reservation_id
+                    }
+                    isLoading={cancelingId === row.reservation_id}
+                    onClick={() => handleCancel(row)}
+                  >
+                    キャンセル
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() =>
+                      navigate(`/my/reservations/${row.reservation_id}`)
+                    }
+                  >
+                    確認
+                  </Button>
+                </div>
               ),
             },
           ]}
